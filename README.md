@@ -7,18 +7,18 @@ windows 下 <br/>
 
 ```javascript
  "scripts": {
-        "test": "set process.env.NODE_ENV=test mocha --compilers js:babel-core/register --recursive",
-        "test:watch": "set process.env.NODE_ENV=test mocha --compilers js:babel-core/register --recursive --watch"
+        "test": "set process.env.NODE_ENV=production  mocha --compilers js:babel-core/register --recursive",
+        "test:watch": "set process.env.NODE_ENV=production  mocha --compilers js:babel-core/register --recursive --watch"
   }
-  <br/>
+  ``` 
   
 非windows 下 <br/>
 ```javascript
  "scripts": {
-        "test": "NODE_ENV=test mocha --compilers js:babel-core/register --recursive",
-        "test:watch": "NODE_ENV=test mocha --compilers js:babel-core/register --recursive --watch"
+        "test": "NODE_ENV=production  mocha --compilers js:babel-core/register --recursive",
+        "test:watch": "NODE_ENV=production  mocha --compilers js:babel-core/register --recursive --watch"
   }
-  
+  ```
   
   
   
