@@ -87,6 +87,21 @@ windows 下 <br/>
     }
    ```
   
+  Webpack 的配置提供了 resolve 和 resolveLoader 参数来设置模块解析的处理细节，resolve 用来配置应用层的模块（要被打包的模块）解析，resolveLoader 用来配置 loader 模块的解析。
+
+当引入通过 npm 安装的 node.js 模块时，可能出现找不到依赖的错误。Node.js 模块的依赖解析算法很简单，是通过查看模块的每一层父目录中的 node_modules 文件夹来查询依赖的。当出现 Node.js 模块依赖查找失败的时候，可以尝试设置 resolve.fallback 和 resolveLoader.fallback 来解决问题。
+  ```
+  resolve: {
+    alias: {
+      'redux-devtools': path.join(__dirname, '..', '..', 'src'),
+      'react': path.join(__dirname, 'node_modules', 'react')
+    }
+  },
+  resolveLoader: {
+    'fallback': path.join(__dirname, 'node_modules')
+  },
+  ```
+  
    关于模块(Module)加载，我们就定义在module.loaders中。这里通过正则表达式去匹配不同后缀的文件名，然后给它们定义不同的加载器。比如说给less文件定义串联的三个加载器（！用来定义级联关系）： 
   ```
   module: {
