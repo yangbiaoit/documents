@@ -63,7 +63,8 @@ windows 下 <br/>
 ```
   还可以添加用来定义png、jpg这样的图片资源在小于10k时自动处理为base64图片的加载器： 
   给css和less还有图片添加了loader之后，不仅可以像在node中那样require js文件了，还可以require css、less甚至图片文件：  
-  [PS:这里的loader是可以省略掉 -loader 这样的，也就是原本应该写成 style-loader!css-loader!sass-loader]  
+  [PS:这里的loader是可以省略掉 -loader 这样的，也就是原本应该写成 style-loader!css-loader!sass-loader]
+  [PS:!级联关系 如 !style!css!sass 先用sass处理，然后用css处理，最后用style处理]
  在上面示例代码中配置的第一个loaders我们可以看到一个叫做react-hot的加载器。我的项目是用来学习react写相关代码的，所以配置了一个react-hot加载器，通过它，可以实现对react组件的热替换。我们已经在entry参数中配置了`webpack/hot/only-dev-server`,所以我们只要在启动webpack开发服务器时开启--hot参数，就可以使用react-hot-loader了。在package.json文件中这样定义： 
  ```
  "scripts": {
