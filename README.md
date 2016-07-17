@@ -47,7 +47,21 @@ windows 下 <br/>
      extensions:['','.js','.json']
  }
    ```
-   
+  
+   module 关于模块的加载相关，我们就定义在module.loaders中。这里通过正则表达式去匹配不同后缀的文件名，然后给它们定义不同的加载器。比如说给less文件定义串联的三个加载器（！用来定义级联关系）： 
+  ```
+  module: {
+    loaders: [
+        { test: /\.js?$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/ },
+        { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
+        { test: /\.css$/, loader: "style!css" },
+        { test: /\.less/, loader: 'style-loader!css-loader!less-loader'},
+        { test: /\.(png|jpg)$/,loader: 'url-loader?limit=10000'} //还可以添加用来定义png、jpg这样的图片资源在小于10k时自动处理为base64图片的加载器：
+    ]
+}
+```
+ 给css和less还有图片添加了loader之后，我们不仅可以像在node中那样require js文件了，我们还可以require css、less甚至图片文件： 
+
   
   
   
