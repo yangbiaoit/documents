@@ -40,6 +40,13 @@ windows 下 <br/>
  }
   ```
   
+  ### webpack在构建包的时候会按目录的进行文件的查找，resolve属性中的extensions数组中用于配置程序可以自行补全哪些文件后缀：然后我们想要加载一个js文件时，只要require('common')就可以加载common.js文件了。
+  ```
+  resolve:{
+     extensions:['','.js','.json']
+ }
+   ```
+   
   
   
   
