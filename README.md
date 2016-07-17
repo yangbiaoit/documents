@@ -93,9 +93,9 @@ windows 下 <br/>
 externals
 当我们想在项目中require一些其他的类库或者API，而又不想让这些类库的源码被构建到运行时文件中，这在实际开发中很有必要。此时我们就可以通过配置externals参数来解决这个问题：
 ```
-1 externals: {
-2     "jquery": "jQuery"
-3 }
+ externals: {
+     "jquery": "jQuery"
+ }
 ```
 这样我们就可以放心的在项目中使用这些API了：var jQuery = require("jquery");
 
