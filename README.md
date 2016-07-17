@@ -20,6 +20,18 @@ windows 下 <br/>
   ```
   
  webpack.config.js  
+  
+  plugins 
+   ```
+    var commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
+   
+    ...
+    plugins: [commonsPlugin]
+    ...
+   ```
+   plugins 是插件项，这里我们使用了一个 CommonsChunkPlugin 的插件，它用于提取多个入口文件的公共脚本部分，然后生成一个 common.js 来方便多页面之间进行复用。
+ 
+ 
   entry可以是个字符串或数组或者是对象。
   
    当entry是个字符串的时候，用来定义入口文件： 
@@ -42,6 +54,21 @@ windows 下 <br/>
  }
   ```
   
+  entry 与 output结合
+   ```
+    entry: {
+        page1: "./page1",
+        //支持数组形式，将加载数组中的所有模块，但以最后一个模块作为输出
+        page2: ["./entry1", "./entry2"]
+    },
+    output: {
+        path: "dist/js/page",
+        filename: "[name].bundle.js"
+    }
+   ```
+   该段代码最终会生成一个 page1.bundle.js 和 page2.bundle.js，并存放到 ./dist/js/page 文件夹下。 
+  
+  
   webpack在构建的时候会按目录进行文件的查找，resolve属性中的extensions数组中用于配置程序可以自行补全哪些文件后缀,然后想要加载一个js文件时，只要require('common')就可以加载common.js文件了。
   ```
   resolve: {
@@ -53,7 +80,7 @@ windows 下 <br/>
         
         //模块别名定义，方便后续直接引用别名，无须多写长长的地址
         alias: {
-            AppStore : 'js/stores/AppStores.js',//后续直接 require('AppStore') 即可
+            AppStore  : 'js/stores/AppStores.js',//后续直接 require('AppStore') 即可
             ActionType : 'js/actions/ActionType.js',
             AppAction : 'js/actions/AppAction.js'
         }
@@ -100,8 +127,51 @@ externals
 这样我们就可以放心的在项目中使用这些API了：var jQuery = require("jquery");
 
 
-[原文](http://www.cnblogs.com/Leo_wl/p/4862714.html)
+shimming 在 AMD/CMD 中，我们需要对不符合规范的模块（比如一些直接返回全局变量的插件）进行 shim 处理，这时候我们需要使用 exports-loader
+```
+{ test: require.resolve("./src/js/tool/swipe.js"),  loader: "exports?swipe"}
+```
+之后在脚本中需要引用该模块的时候，这么简单地来使用就可以了：
+```
+require('./tool/swipe.js');
+swipe();
+```
 
+
+自定义公共模块提取
+在文章开始我们使用了 CommonsChunkPlugin 插件来提取多个页面之间的公共模块，并将该模块打包为 common.js 。
+但有时候我们希望能更加个性化一些，我们可以这样配置：
+```
+var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+module.exports = {
+    entry: {
+        p1: "./page1",
+        p2: "./page2",
+        p3: "./page3",
+        ap1: "./admin/page1",
+        ap2: "./admin/page2"
+    },
+    output: {
+        filename: "[name].js"
+    },
+    plugins: [
+        new CommonsChunkPlugin("admin-commons.js", ["ap1", "ap2"]),
+        new CommonsChunkPlugin("commons.js", ["p1", "p2", "admin-commons.js"])
+    ]
+};
+// <script>s required:
+// page1.html: commons.js, p1.js
+// page2.html: commons.js, p2.js
+// page3.html: p3.js
+// admin-page1.html: commons.js, admin-commons.js, ap1.js
+// admin-page2.html: commons.js, admin-commons.js, ap2.js
+```
+
+
+
+
+[原文](http://www.cnblogs.com/Leo_wl/p/4862714.html)
+[原文](http://blog.csdn.net/yczz/article/details/49250623)
 
   
   
