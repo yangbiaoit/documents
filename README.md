@@ -19,7 +19,7 @@ windows 下 <br/>
   }
   ```
   
- webpack.config.js entry 
+ webpack.config.js  
   entry可以是个字符串或数组或者是对象。
   
    当entry是个字符串的时候，用来定义入口文件： 
@@ -44,9 +44,20 @@ windows 下 <br/>
   
   webpack在构建的时候会按目录进行文件的查找，resolve属性中的extensions数组中用于配置程序可以自行补全哪些文件后缀,然后想要加载一个js文件时，只要require('common')就可以加载common.js文件了。
   ```
-  resolve:{
-     extensions:['','.js','.json']
- }
+  resolve: {
+        //查找module的话从这里开始查找
+        root: '/pomy/github/flux-example/src', //绝对路径
+        
+        //自动扩展文件后缀名，意味着require模块可以省略不写后缀名
+        extensions: ['', '.js', '.json', '.scss'],
+        
+        //模块别名定义，方便后续直接引用别名，无须多写长长的地址
+        alias: {
+            AppStore : 'js/stores/AppStores.js',//后续直接 require('AppStore') 即可
+            ActionType : 'js/actions/ActionType.js',
+            AppAction : 'js/actions/AppAction.js'
+        }
+    }
    ```
   
    关于模块(Module)加载，我们就定义在module.loaders中。这里通过正则表达式去匹配不同后缀的文件名，然后给它们定义不同的加载器。比如说给less文件定义串联的三个加载器（！用来定义级联关系）： 
