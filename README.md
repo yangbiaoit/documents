@@ -62,6 +62,33 @@ windows 下 <br/>
 ```
  给css和less还有图片添加了loader之后，我们不仅可以像在node中那样require js文件了，我们还可以require css、less甚至图片文件： 
 
+ 在上面示例代码中配置的第一个loaders我们可以看到一个叫做react-hot的加载器。我的项目是用来学习react写相关代码的，所以配置了一个react-hot加载器，通过它，可以实现对react组件的热替换。我们已经在entry参数中配置了`webpack/hot/only-dev-server`,所以我们只要在启动webpack开发服务器时开启--hot参数，就可以使用react-hot-loader了。在package.json文件中这样定义： 
+ ```
+ "scripts": {
+     "start": "webpack-dev-server --hot --progress --colors",
+     "build": "webpack --progress --colors"
+ }
+```
+ plugin webpack提供了[丰富的组件](http://webpack.github.io/docs/list-of-plugins.html)用来满足不同的需求，当然我们也可以自行实现一个组件来满足自己的需求。若项目里面没有特殊的需求，于是便只是配置了NoErrorsPlugin插件，用来跳过编译时出错的代码并记录，使编译后运行时的包不会发生错误： 
+```
+ plugins: [
+     new webpack.NoErrorsPlugin()
+ ]
+```
+
+externals
+当我们想在项目中require一些其他的类库或者API，而又不想让这些类库的源码被构建到运行时文件中，这在实际开发中很有必要。此时我们就可以通过配置externals参数来解决这个问题：
+```
+1 externals: {
+2     "jquery": "jQuery"
+3 }
+```
+这样我们就可以放心的在项目中使用这些API了：var jQuery = require("jquery");
+
+
+[原文](http://www.cnblogs.com/Leo_wl/p/4862714.html)
+
+
   
   
   
